@@ -1,4 +1,4 @@
-package model;
+package org.SpringBootCrud.BootCrud.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
