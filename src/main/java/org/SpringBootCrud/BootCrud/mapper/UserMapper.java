@@ -11,7 +11,6 @@ public class UserMapper {
     }
 
     //convert UserDTO to User
-
     public static User mapToUser(UserDto userDto){
         return new User(userDto.getId(),userDto.getFname(),userDto.getLname(),userDto.getEmail());
     }
