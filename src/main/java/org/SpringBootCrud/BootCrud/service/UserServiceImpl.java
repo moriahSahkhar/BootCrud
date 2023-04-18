@@ -2,6 +2,7 @@ package org.SpringBootCrud.BootCrud.service;
 
 import lombok.AllArgsConstructor;
 import org.SpringBootCrud.BootCrud.dto.UserDto;
+import org.SpringBootCrud.BootCrud.mapper.AutoUserMapper;
 import org.SpringBootCrud.BootCrud.mapper.UserMapper;
 import org.SpringBootCrud.BootCrud.model.User;
 import org.SpringBootCrud.BootCrud.repo.UserRepo;
@@ -25,17 +26,23 @@ public class UserServiceImpl {
 
 //        User user = UserMapper.mapToUser(userDto);
 
-        User user = modelMapper.map(userDto, User.class);
+//        User user = modelMapper.map(userDto, User.class);
+//        User savedUser = userRepo.save(user);
+//
+//        return modelMapper.map(savedUser, UserDto.class);
+
+        User user = AutoUserMapper.MAPPER.mapToUser(userDto);
         User savedUser = userRepo.save(user);
 
-        return modelMapper.map(savedUser, UserDto.class);
+        return AutoUserMapper.MAPPER.mapToUserDto(savedUser);
     }
 
     public UserDto getUserById(Long id) {
         Optional<User> optionalUser = userRepo.findById(id);
         User user = optionalUser.get();
 
-        return modelMapper.map(user, UserDto.class);
+//        return modelMapper.map(user, UserDto.class);
+        return AutoUserMapper.MAPPER.mapToUserDto(user);
     }
 
     public List<UserDto> getAllUsers() {
@@ -52,7 +59,8 @@ public class UserServiceImpl {
         List<User> users = userRepo.findAll();
 
 //        return users.stream().map(UserMapper::mapToUserDto).collect(Collectors.toList());
-        return users.stream().map((user) -> modelMapper.map(user, UserDto.class)).collect(Collectors.toList());
+//        return users.stream().map((user) -> modelMapper.map(user, UserDto.class)).collect(Collectors.toList());
+        return users.stream().map(AutoUserMapper.MAPPER::mapToUserDto).collect(Collectors.toList());
     }
 
     public UserDto updateUser(UserDto userDto) {
@@ -67,7 +75,8 @@ public class UserServiceImpl {
         User updatedUser = userRepo.save(existingUser);
 
 //        return UserMapper.mapToUserDto(updatedUser);
-        return modelMapper.map(updatedUser, UserDto.class);
+//        return modelMapper.map(updatedUser, UserDto.class);
+        return AutoUserMapper.MAPPER.mapToUserDto(updatedUser);
     }
 
     public void deleteById(Long id) {
