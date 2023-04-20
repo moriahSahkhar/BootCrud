@@ -1,5 +1,6 @@
 package org.SpringBootCrud.BootCrud.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.SpringBootCrud.BootCrud.Exception.ErrorDetails;
 import org.SpringBootCrud.BootCrud.Exception.ResourceNotFoundException;
@@ -23,7 +24,7 @@ public class UserController {
     private UserServiceImpl userService;
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto user){
+    public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto user){
         return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id,@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id,@RequestBody @Valid UserDto userDto){
         userDto.setId(id);
         return new ResponseEntity<>(userService.updateUser(userDto), HttpStatus.OK);
     }
