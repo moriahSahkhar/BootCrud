@@ -1,6 +1,8 @@
 package org.SpringBootCrud.BootCrud.controller;
 
 import lombok.AllArgsConstructor;
+import org.SpringBootCrud.BootCrud.Exception.ErrorDetails;
+import org.SpringBootCrud.BootCrud.Exception.ResourceNotFoundException;
 import org.SpringBootCrud.BootCrud.dto.UserDto;
 import org.SpringBootCrud.BootCrud.model.User;
 import org.SpringBootCrud.BootCrud.service.UserServiceImpl;
@@ -8,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController

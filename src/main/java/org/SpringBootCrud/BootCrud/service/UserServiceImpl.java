@@ -1,6 +1,8 @@
 package org.SpringBootCrud.BootCrud.service;
 
 import lombok.AllArgsConstructor;
+import org.SpringBootCrud.BootCrud.Exception.EmailAlreadyExistsException;
+import org.SpringBootCrud.BootCrud.Exception.ResourceNotFoundException;
 import org.SpringBootCrud.BootCrud.dto.UserDto;
 import org.SpringBootCrud.BootCrud.mapper.AutoUserMapper;
 import org.SpringBootCrud.BootCrud.mapper.UserMapper;
@@ -31,6 +33,12 @@ public class UserServiceImpl {
 //
 //        return modelMapper.map(savedUser, UserDto.class);
 
+        Optional<User> optionalUser = userRepo.findByEmail(userDto.getEmail());
+
+        if(optionalUser.isPresent()){
+            throw new EmailAlreadyExistsException("Email Already Exist for user");
+        }
+
         User user = AutoUserMapper.MAPPER.mapToUser(userDto);
         User savedUser = userRepo.save(user);
 
@@ -38,8 +46,11 @@ public class UserServiceImpl {
     }
 
     public UserDto getUserById(Long id) {
-        Optional<User> optionalUser = userRepo.findById(id);
-        User user = optionalUser.get();
+        User user = userRepo.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("User","id",id)
+        );
+
+//        User user = optionalUser.get();
 
 //        return modelMapper.map(user, UserDto.class);
         return AutoUserMapper.MAPPER.mapToUserDto(user);
@@ -64,10 +75,11 @@ public class UserServiceImpl {
     }
 
     public UserDto updateUser(UserDto userDto) {
-        Optional<User> optionalUser = userRepo.findById(userDto.getId());
+        User existingUser = userRepo.findById(userDto.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("User","id",userDto.getId())
+        );
 
-        User existingUser = optionalUser.get();
-
+//        User existingUser = optionalUser.get();
         existingUser.setEmail(userDto.getEmail());
         existingUser.setFname(userDto.getFname());
         existingUser.setLname(userDto.getLname());
@@ -80,6 +92,11 @@ public class UserServiceImpl {
     }
 
     public void deleteById(Long id) {
+
+        User existingUser = userRepo.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("User","id",id)
+        );
+
         userRepo.deleteById(id);
     }
 }
