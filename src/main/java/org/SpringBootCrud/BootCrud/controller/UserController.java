@@ -2,10 +2,12 @@ package org.SpringBootCrud.BootCrud.controller;
 
 import java.util.List;
 
+import org.SpringBootCrud.BootCrud.dto.Esign;
 import org.SpringBootCrud.BootCrud.dto.UserDto;
 import org.SpringBootCrud.BootCrud.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +31,7 @@ import jakarta.validation.Valid;
 @RequestMapping("api/users")
 public class UserController {
 
-	@Autowired
+    @Autowired
     private UserServiceImpl userService;
 
     @Operation(
@@ -41,7 +43,7 @@ public class UserController {
             description = "HTTP STATUS 201 CREATED"
     )
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto user){
+    public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto user) {
         return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 
@@ -54,7 +56,7 @@ public class UserController {
             description = "HTTP STATUS 200 SUCCESS"
     )
     @GetMapping("{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id){
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
@@ -67,7 +69,7 @@ public class UserController {
             description = "HTTP STATUS 200 SUCCESS"
     )
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUsers(){
+    public ResponseEntity<List<UserDto>> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
@@ -80,7 +82,7 @@ public class UserController {
             description = "HTTP STATUS 200 SUCCESS"
     )
     @PutMapping("{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id,@RequestBody @Valid UserDto userDto){
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody @Valid UserDto userDto) {
         userDto.setId(id);
         return new ResponseEntity<>(userService.updateUser(userDto), HttpStatus.OK);
     }
@@ -94,10 +96,17 @@ public class UserController {
             description = "HTTP STATUS 200 SUCCESS"
     )
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteUserById(@PathVariable("id") Long id){
+    public ResponseEntity<String> deleteUserById(@PathVariable("id") Long id) {
 
         userService.deleteById(id);
 
         return new ResponseEntity<>("User Deleted Successfully", HttpStatus.OK);
+    }
+
+
+
+    @GetMapping("/msg8080")
+    public String getMSG() {
+        return "HELLO FROM 8080";
     }
 }
